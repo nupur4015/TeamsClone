@@ -1,4 +1,4 @@
-let socket = io.connect("http://localhost:3000");
+let socket = io.connect("https://lower-worms-70452.herokuapp.com");
 let divvidcall = document.getElementById("videocall");
 let joinButton = document.getElementById("join");
 let userVideo = document.getElementById("user");
@@ -9,7 +9,7 @@ let creator = false;
 let rtcPeerConnection;
 let userStream;
 
-// Contains the stun server URL we will be using.
+// contains stun server
 let iceServers = {
   iceServers: [
     { urls: "stun:stun.services.mozilla.com" },
@@ -37,7 +37,6 @@ socket.on("created", function () {
       video: { width: 720, height: 480 },
     })
     .then(function (stream) {
-      /* use the stream */
       userStream = stream;
       divvidcall.style = "display:none";
       userVideo.srcObject = stream;
@@ -46,12 +45,11 @@ socket.on("created", function () {
       };
     })
     .catch(function (err) {
-      /* handle the error */
       alert("Couldn't Access User Media");
     });
 });
 
-// Triggered when a room is succesfully joined.
+// room joined
 
 socket.on("joined", function () {
   creator = false;
@@ -71,7 +69,6 @@ socket.on("joined", function () {
       socket.emit("ready", roomName);
     })
     .catch(function (err) {
-      /* handle the error */
       alert("Couldn't Access User Media");
     });
 });
