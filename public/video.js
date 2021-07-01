@@ -1,4 +1,4 @@
-let socket = io.connect("https://lower-worms-70452.herokuapp.com");
+let socket = io.connect("http://localhost:3000");
 let divvidcall = document.getElementById("videocall");
 let joinButton = document.getElementById("join");
 let userVideo = document.getElementById("user");
