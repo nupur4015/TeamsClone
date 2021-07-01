@@ -5,9 +5,12 @@ const app = express();
 const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./middleware/authMiddleware');
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
 
-
-let server = app.listen(3000);
+let server = app.listen(port);
 
 // connects to mongodb 
 const dbURI = "mongodb+srv://nwuser:harry1234@cluster0.qfuae.mongodb.net/web-app?retryWrites=true&w=majority";

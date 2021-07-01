@@ -8,6 +8,9 @@
   },
   "author": "nupur",
   "license": "ISC",
+  "engines": {
+    "node": "14.15.3"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
