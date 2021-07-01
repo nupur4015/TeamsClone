@@ -43,6 +43,10 @@ const createToken = (id) => {
 // controllers
 
 module.exports.signup_get = (req, res) => {
+  const token = req.cookies.jwt;
+  if(token)
+  res.redirect('/');
+  else
   res.render('signup');
 }
 
