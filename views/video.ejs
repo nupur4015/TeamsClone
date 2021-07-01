@@ -1,0 +1,17 @@
+<%- include('partials/header'); -%>
+
+        <div id="videocall">
+            <h3 class="text">Video Call</h3>
+            <br>
+            <input id="roomName" type="text" placeholder="Room Name" />
+            <button id="join">Join</button>
+        </div>
+        <div id="videocallroom">
+            <video id="user"></video>
+            <video id="peer"></video>
+        </div>
+
+    </body>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="video.js"></script>
+</html>
