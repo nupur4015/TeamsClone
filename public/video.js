@@ -1,5 +1,5 @@
-//var socket = io.connect("localhost:3000");
-var socket = io.connect("https://lower-worms-70452.herokuapp.com");
+var socket = io.connect("localhost:3000");
+//var socket = io.connect("https://lower-worms-70452.herokuapp.com");
 var divvidcall = document.getElementById("videocall");
 var joinButton = document.getElementById("join");
 var userVideo = document.getElementById("user"); 
@@ -186,17 +186,18 @@ function OnIceCandidateFunction(event) {
 }
 
 function OnTrackFunction(event) {
-  userVideo.style="display:none";
-  if ( document.getElementById('${useremail}-video') ) {
-    document.getElementById('${useremail}-video').srcObject=event.streams[0];
+  if ( document.getElementById(useremail+"-video") ) {
+    document.getElementById(useremail+"-video").srcObject=event.streams[0];
+  
   }
   else{
   
   let newVid = document.createElement( 'video' );
-  newVid.id = `${useremail}-video`;
+  newVid.id = useremail+"-video";
   newVid.srcObject = event.streams[0];
   newVid.autoplay=true;
   document.getElementById("videocallroom").appendChild(newVid);
+ 
 }
 /*
 peerVideo.srcObject = event.streams[0];

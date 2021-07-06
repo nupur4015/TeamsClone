@@ -1,5 +1,5 @@
-let socket = io.connect("http://localhost:3000");
-
+//let socket = io.connect("http://localhost:3000");
+var socket = io.connect("https://lower-worms-70452.herokuapp.com");
 var username = document.getElementById("username").innerText;
 var message = document.getElementById("message");
 var button = document.getElementById("send");
