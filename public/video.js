@@ -1,16 +1,27 @@
-let socket = io.connect("https://lower-worms-70452.herokuapp.com");
-let divvidcall = document.getElementById("videocall");
-let joinButton = document.getElementById("join");
-let userVideo = document.getElementById("user");
-let peerVideo = document.getElementById("peer");
-let roomInput = document.getElementById("roomName");
-let roomName;
-let creator = false;
-let rtcPeerConnection;
-let userStream;
+//var socket = io.connect("localhost:3000");
+var socket = io.connect("https://lower-worms-70452.herokuapp.com");
+var divvidcall = document.getElementById("videocall");
+var joinButton = document.getElementById("join");
+var userVideo = document.getElementById("user"); 
+//var peerVideo = document.getElementById("peer");
+var roomInput = document.getElementById("roomName");
+var useremail = document.getElementById("useremail").innerText;
+var mirrorMode;
+var mute = document.getElementById("mute");
+var leave = document.getElementById("leave");
+var hide = document.getElementById("hide");
+var divbtns = document.getElementById("btns");
+var mutevalue=false;
+var hidevalue=false;
+
+
+var roomName;
+var creator = false;
+var rtcPeerConnection;
+var userStream;
 
 // contains stun server
-let iceServers = {
+var iceServers = {
   iceServers: [
     { urls: "stun:stun.services.mozilla.com" },
     { urls: "stun:stun.l.google.com:19302" },
@@ -26,6 +37,26 @@ joinButton.addEventListener("click", function () {
   }
 });
 
+mute.addEventListener("click", function () {
+  mutevalue=!mutevalue;
+  if(mutevalue){
+  mute.textContent="Unmute";
+  }
+  else{
+  mute.textContent="Mute";
+  }
+});
+
+hide.addEventListener("click", function () {
+  hidevalue=!hidevalue;
+  if(hidevalue){
+  hide.textContent="Unhide";
+  }
+  else{
+  hide.textContent="Hide";
+  }
+});
+
 // room created
 
 socket.on("created", function () {
@@ -33,16 +64,21 @@ socket.on("created", function () {
 
   navigator.mediaDevices
     .getUserMedia({
-      audio: true,
-      video: { width: 720, height: 480 },
+      audio:  {echoCancellation: true,
+      noiseSuppression: true },
+      video: { width: 600, height: 450 },
     })
     .then(function (stream) {
       userStream = stream;
       divvidcall.style = "display:none";
+      divbtns.style="display:flex";
+      //userVideo.id=`${ partnerName }-video`;
+      mirrorMode=true;
       userVideo.srcObject = stream;
-      userVideo.onloadedmetadata = function (e) {
-        userVideo.play();
-      };
+      mirrorMode ? userVideo.classList.add( 'mirror-mode' ) : userVideo.classList.remove( 'mirror-mode' );
+     
+      //document.getElementById("videocallroom").appendChild(userVideo);
+
     })
     .catch(function (err) {
       alert("Couldn't Access User Media");
@@ -56,16 +92,19 @@ socket.on("joined", function () {
 
   navigator.mediaDevices
     .getUserMedia({
-      audio: true,
-      video: { width: 720, height: 480 },
+      audio: {echoCancellation: true,
+        noiseSuppression: true },
+      video: { width: 600, height: 450 },
     })
     .then(function (stream) {
       userStream = stream;
       divvidcall.style = "display:none";
+      divbtns.style="display:flex";
+      
+      mirrorMode=true;
       userVideo.srcObject = stream;
-      userVideo.onloadedmetadata = function (e) {
-        userVideo.play();
-      };
+      mirrorMode ? userVideo.classList.add( 'mirror-mode' ) : userVideo.classList.remove( 'mirror-mode' );
+      
       socket.emit("ready", roomName);
     })
     .catch(function (err) {
@@ -92,7 +131,7 @@ socket.on("ready", function () {
       .createOffer()
       .then((offer) => {
         rtcPeerConnection.setLocalDescription(offer);
-        socket.emit("offer", offer, roomName);
+        socket.emit("offer", offer, roomName);  
       })
 
       .catch((error) => {
@@ -146,8 +185,21 @@ function OnIceCandidateFunction(event) {
 }
 
 function OnTrackFunction(event) {
-  peerVideo.srcObject = event.streams[0];
-  peerVideo.onloadedmetadata = function (e) {
-    peerVideo.play();
-  };
+  userVideo.style="display:none";
+  if ( document.getElementById('${useremail}-video') ) {
+    document.getElementById('${useremail}-video').srcObject=event.streams[0];
+  }
+  else{
+  
+  let newVid = document.createElement( 'video' );
+  newVid.id = `${useremail}-video`;
+  newVid.srcObject = event.streams[0];
+  newVid.autoplay=true;
+  document.getElementById("videocallroom").appendChild(newVid);
+}
+/*
+peerVideo.srcObject = event.streams[0];
+peerVideo.onloadedmetadata = function (e) {
+  peerVideo.play();
+}; */
 }

@@ -57,7 +57,7 @@ io.on("connection", function (socket) {
     if (room == undefined) {
       socket.join(roomName);
       socket.emit("created");
-    } else if (room.size == 1) {
+    } else if (room.size <5) {
       //one person is inside the room
       socket.join(roomName);
       socket.emit("joined");
@@ -89,6 +89,11 @@ io.on("connection", function (socket) {
   //answer recieved from a person in the room
   socket.on("answer", function (answer, roomName) {
     socket.broadcast.to(roomName).emit("answer", answer);   //sends answer to the other person in the room
+  });
+
+  //real-time chat broadcast message
+  socket.on("sendingMessage", function (data) {
+    io.emit("broadcastMessage", data);
   });
 });
 

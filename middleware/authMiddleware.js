@@ -21,6 +21,7 @@ const requireAuth = (req, res, next) => {
 };
 
 // checks current user
+
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
@@ -30,7 +31,8 @@ const checkUser = (req, res, next) => {
         next();
       } else {
         let user = await User.findById(decodedToken.id);
-        res.locals.user = user;                       //used in views 
+        res.locals.user = user; //used in views 
+        
         next();
       }
     });
@@ -41,4 +43,4 @@ const checkUser = (req, res, next) => {
 };
 
 
-module.exports = { requireAuth, checkUser };
+module.exports = { requireAuth, checkUser};

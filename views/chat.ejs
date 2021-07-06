@@ -1,0 +1,27 @@
+
+<%- include('partials/header1'); -%>
+<div id="active">
+    <img src="/active.png" alt="" id="i"  style="display: none">
+    <h4 id=ppl > </h4>
+  </div>
+  
+<div id="chat-app">
+    <h4>Real time chat</h4>
+    <br>
+    <h2 id="username" style="display: none;"><%=user.name%></h2>
+    <div id="chat-window">
+        <div id="output"></div>
+    </div>
+    
+
+    
+    <input id="message" type="text" onfocus="this.value=''" placeholder="Message" />
+    <button id="send" >Send</button>
+</div>
+
+
+
+</body>
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<script src="/chat.js"></script>
+</html>

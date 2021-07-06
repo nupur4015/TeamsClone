@@ -23,7 +23,7 @@ nav{
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 120px;
+  margin-bottom: 100px;
 }
 nav ul{
   display: flex;
@@ -117,3 +117,63 @@ header .btn{
   max-width: 600px;
   margin: 30px auto;
 }
+#chat-app {
+  text-align: center;
+  max-width: 600px;
+  background-color: white;
+  margin: 30px auto;
+}
+
+#chat-window {
+  height: 350px;
+  overflow: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column-reverse;
+  
+}
+
+#output p {
+  padding: 14px 0px;
+  margin: 0 20px;
+  border-bottom: 1px solid black;
+  background-color:white;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+#videocallroom {
+  display : flex;
+  justify-content: center;
+}
+#user{
+  padding: 20px;
+}
+#peer{
+  padding: 20px;
+}
+
+#btns   {
+  
+  
+  display:flex;
+  justify-content: center;
+ 
+
+}
+
+#b{
+
+  display:inline-block;
+  
+}
+
+#active img {
+  height : 22px;
+  width: 22px;
+ 
+  float: left;
+  margin-right: 10px;
+
+}
+

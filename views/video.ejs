@@ -3,12 +3,18 @@
         <div id="videocall">
             <h3 class="text">Video Call</h3>
             <br>
+            <h2 id="useremail" style="display: none;"><%=user.email%></h2>
             <input id="roomName" type="text" placeholder="Room Name" />
             <button id="join">Join</button>
         </div>
         <div id="videocallroom">
-            <video id="user"></video>
-            <video id="peer"></video>
+            <video class="local-video mirror-mode" id="user" volume='0' autoplay=false></video>
+            
+        </div>
+        <div id="btns" style="display: none;">
+            <button class="b" id="hide">Hide </button>
+            <button class="b" id="mute">Mute</button>
+            <button class="b" id="leave">Leave</button>
         </div>
 
     </body>
