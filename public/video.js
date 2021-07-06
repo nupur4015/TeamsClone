@@ -4,6 +4,7 @@ var divvidcall = document.getElementById("videocall");
 var joinButton = document.getElementById("join");
 var userVideo = document.getElementById("user"); 
 //var peerVideo = document.getElementById("peer");
+var p=[];
 var roomInput = document.getElementById("roomName");
 var useremail = document.getElementById("useremail").innerText;
 var mirrorMode;
@@ -122,15 +123,15 @@ socket.on("full", function () {
 
 socket.on("ready", function () {
   if (creator) {
-    rtcPeerConnection = new RTCPeerConnection(iceServers);
-    rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
-    rtcPeerConnection.ontrack = OnTrackFunction;
-    rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);
-    rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);
-    rtcPeerConnection
+    p[useremail] = new RTCPeerConnection(iceServers);
+    p[useremail].onicecandidate = OnIceCandidateFunction;
+    p[useremail].ontrack = OnTrackFunction;
+    p[useremail].addTrack(userStream.getTracks()[0], userStream);
+    p[useremail].addTrack(userStream.getTracks()[1], userStream);
+    p[useremail]
       .createOffer()
       .then((offer) => {
-        rtcPeerConnection.setLocalDescription(offer);
+        p[useremail].setLocalDescription(offer);
         socket.emit("offer", offer, roomName);  
       })
 
@@ -144,23 +145,23 @@ socket.on("ready", function () {
 
 socket.on("candidate", function (candidate) {
   let icecandidate = new RTCIceCandidate(candidate);
-  rtcPeerConnection.addIceCandidate(icecandidate);
+  p[useremail].addIceCandidate(icecandidate);
 });
 
 // receiving an offer from the person who created the room
 
 socket.on("offer", function (offer) {
   if (!creator) {
-    rtcPeerConnection = new RTCPeerConnection(iceServers);
-    rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
-    rtcPeerConnection.ontrack = OnTrackFunction;
-    rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);
-    rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);
-    rtcPeerConnection.setRemoteDescription(offer);
-    rtcPeerConnection
+    p[useremail] = new RTCPeerConnection(iceServers);
+    p[useremail].onicecandidate = OnIceCandidateFunction;
+    p[useremail].ontrack = OnTrackFunction;
+    p[useremail].addTrack(userStream.getTracks()[0], userStream);
+    p[useremail].addTrack(userStream.getTracks()[1], userStream);
+    p[useremail].setRemoteDescription(offer);
+    p[useremail]
       .createAnswer()
       .then((answer) => {
-        rtcPeerConnection.setLocalDescription(answer);
+        p[useremail].setLocalDescription(answer);
         socket.emit("answer", answer, roomName);
       })
       .catch((error) => {
@@ -172,7 +173,7 @@ socket.on("offer", function (offer) {
 // receiving an answer from the person who joined the room
 
 socket.on("answer", function (answer) {
-  rtcPeerConnection.setRemoteDescription(answer);
+  p[useremail].setRemoteDescription(answer);
 });
 
 //RTCPeerConnection functions defined
