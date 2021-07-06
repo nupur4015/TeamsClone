@@ -1,5 +1,5 @@
-var socket = io.connect("localhost:3000");
-//var socket = io.connect("https://lower-worms-70452.herokuapp.com");
+//var socket = io.connect("localhost:3000");
+var socket = io.connect("https://lower-worms-70452.herokuapp.com");
 var divvidcall = document.getElementById("videocall");
 var joinButton = document.getElementById("join");
 var userVideo = document.getElementById("user"); 
