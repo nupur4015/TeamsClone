@@ -10,7 +10,6 @@ var mute = document.getElementById("mute");
 var leave = document.getElementById("leave");
 var hide = document.getElementById("hide");
 var divbtns = document.getElementById("btns");
-var chat = document.getElementById("icon-chat");
 var chatBox=document.getElementById("chat-box");
 var message = document.getElementById("message");
 var button = document.getElementById("send");
