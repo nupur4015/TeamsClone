@@ -112,7 +112,6 @@ header .btn{
   display: inline-block;
   font-size: 0.8em;
 }
-
 #videocall{
   max-width: 600px;
   margin: 30px auto;
@@ -123,16 +122,13 @@ header .btn{
   background-color: white;
   margin: 30px auto;
 }
-
 #chat-window {
   height: 350px;
   overflow: auto;
   background-color: white;
   display: flex;
   flex-direction: column-reverse;
-  
 }
-
 #output p {
   padding: 14px 0px;
   margin: 0 20px;
@@ -141,31 +137,37 @@ header .btn{
   text-align: left;
   word-wrap: break-word;
 }
-
-
-
-
-#btns   {
-  
-  
+#btns{
   display:flex;
   justify-content: center;
- 
-
-}
-
+ }
 #b{
-
-  display:inline-block;
-  
+display:inline-block;
 }
-
 #active img {
   height : 22px;
   width: 22px;
  
   float: left;
   margin-right: 10px;
-
 }
-
+#icon-chat{
+  float: right;
+}
+.chat-box{
+  width: 300px;
+  position: fixed;
+  bottom: 0;
+  right: 0px;
+  border: 3px solid #ff08086b;
+  background-color: white;
+}
+#chat{
+  text-align: center;
+  width: 300px;
+  background-color: white;
+  margin: 30px auto;
+  }
+ #thankyou{
+  justify-content: center;
+ }

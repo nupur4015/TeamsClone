@@ -1,14 +1,30 @@
 <%- include('partials/header'); -%>
+        
+<button id="icon-chat" style="display: none;" onclick="openForm()">Chat</button>
 
+<div id="chat-box" class="chat-box" style="display:none">
+    <div id="chat">
+    <h2 id="username" style="display: none;"><%=user.name%></h2>
+    <div id="chat-window">
+        <div id="output"></div>
+    </div>
+    <input id="message" type="text" onfocus="this.value=''" placeholder="Message" />
+    <button id="send" >Send</button>
+    </div>
+
+</div>
         <div id="videocall">
             <h3 class="text">Video Call</h3>
             <br>
-            <h2 id="useremail" style="display: none;"><%=user.email%></h2>
             <input id="roomName" type="text" placeholder="Room Name" />
             <button id="join">Join</button>
         </div>
+        <div id="thankyou" style="display: none;">
+            <h1  >Thank You!<br> Your call has ended.</h1>
+        </div>  
         <div id="videocallroom">
-            <video class="local-video mirror-mode" id="user" volume='0' autoplay=false></video>
+            <video id="user" ></video>
+            <video id="peer" ></video>
             
         </div>
         <div id="btns" style="display: none;">

@@ -57,7 +57,7 @@ io.on("connection", function (socket) {
     if (room == undefined) {
       socket.join(roomName);
       socket.emit("created");
-    } else if (room.size <5) {
+    } else if (room.size ==1) {
       //one person is inside the room
       socket.join(roomName);
       socket.emit("joined");
@@ -95,9 +95,16 @@ io.on("connection", function (socket) {
   socket.on("sendingMessage", function (data) {
     io.emit("broadcastMessage", data);
   });
+  
+  //chat in meet
+
+  socket.on("Chat", function (data) {
+    io.to(data.roomName).emit("Message", data);
+  });
+
+  //leave room
+  socket.on("leave",function(roomName){
+    socket.leave(roomName);
+    socket.broadcast.to(roomName).emit("leave");
+  });
 });
-
-
-
-
-
