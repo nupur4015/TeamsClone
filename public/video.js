@@ -21,8 +21,6 @@ var texts=document.getElementsByClassName("texts");
 var mutevalue=false;
 var hidevalue=false;
 var chatvalue=false;
-let roomm;
-
 
 var roomName;
 var creator = false;
