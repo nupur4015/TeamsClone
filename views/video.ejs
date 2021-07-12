@@ -6,13 +6,22 @@
     <div id="chat">
     <h2 id="username" style="display: none;"><%=user.name%></h2>
     <div id="chat-window">
-        <div id="output"></div>
+        <div id="output">
+            <% if (msgs.length > 0) { %>
+                 <% msgs.forEach(msg => { %> 
+                    <div class="texts" id="<%=msg.roomName%>" style="display: none">
+                    <p ><strong><%=msg.user%>: </strong><%=msg.message%><p>  
+                    </div>
+                <% }) %>
+              <% } %>
+        </div>
     </div>
     <input id="message" type="text" onfocus="this.value=''" placeholder="Message" />
     <button id="send" >Send</button>
     </div>
-
 </div>
+<button style="display: none" id="start">Start Meeting</button>
+<button style="display: none" id="joining">Join Meeting</button>
         <div id="videocall">
             <h3 class="text">Video Call</h3>
             <br>

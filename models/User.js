@@ -24,14 +24,14 @@ const userSchema = new mongoose.Schema({
 });
 
 
-// function for saving hashed password 
+//function for saving hashed password 
 userSchema.pre('save', async function(next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// static method to login user-function defined
+//static method to login user-function defined
 userSchema.statics.login = async function(email, password) {
   const user = await this.findOne({ email });
   if (user) {

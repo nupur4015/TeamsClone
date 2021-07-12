@@ -5,7 +5,9 @@ const app = express();
 const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./middleware/authMiddleware');
+const Msg = require("./models/Msg");
 let port = process.env.PORT;
+
 if (port == null || port == "") {
   port = 3000;
 }
@@ -33,8 +35,16 @@ app.get('*', checkUser);
 app.get('/', (req, res) => {
   res.render('home');
 });
+
+
 app.get('/video',requireAuth,(req,res)=>{
-  res.render('video');
+  Msg.find()
+ .then(result => {
+   res.render('video', { msgs: result});        //getting messages from database
+ })
+ .catch(err => {
+   console.log(err);
+ });
 });
 app.get('/chat',requireAuth,(req,res)=>{
   res.render('chat');
@@ -52,21 +62,31 @@ io.on("connection", function (socket) {
   socket.on("join", function (roomName) {
     let rooms = io.sockets.adapter.rooms;
     let room = rooms.get(roomName);
-
-    //no room with that name exists
+    
+    
     if (room == undefined) {
       socket.join(roomName);
-      socket.emit("created");
+      socket.emit("enter");
     } else if (room.size ==1) {
       //one person is inside the room
       socket.join(roomName);
-      socket.emit("joined");
+      socket.emit("enter");
     } else {
       //two people inside the room
       socket.emit("full");
     }
-    console.log(rooms);
   });
+
+  //start meeting button hit
+  socket.on("start",function(){
+    socket.emit("created");
+  });
+  
+  //join meeting button hit
+  socket.on("joining",function(){ 
+    socket.emit("joined");  
+  });
+    
 
   //ready to communicate
   socket.on("ready", function (roomName) {
@@ -97,8 +117,8 @@ io.on("connection", function (socket) {
   });
   
   //chat in meet
-
-  socket.on("Chat", function (data) {
+  socket.on("Chat", async function (data) {
+    const msg = await Msg.create({ roomName:data.roomName,user:data.user, message:data.message });
     io.to(data.roomName).emit("Message", data);
   });
 

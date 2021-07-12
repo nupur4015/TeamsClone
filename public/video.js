@@ -15,9 +15,13 @@ var message = document.getElementById("message");
 var button = document.getElementById("send");
 var output = document.getElementById("output");
 var username = document.getElementById("username").innerText;
+var start = document.getElementById("start");
+var joining = document.getElementById("joining");
+var texts=document.getElementsByClassName("texts");
 var mutevalue=false;
 var hidevalue=false;
 var chatvalue=false;
+let roomm;
 
 
 var roomName;
@@ -37,9 +41,35 @@ joinButton.addEventListener("click", function () {
   if (roomInput.value == "") {
     alert("Please enter a room name");
   } else {
-    roomName = roomInput.value;
-    socket.emit("join", roomName);
+  roomName = roomInput.value;
+  socket.emit("join", roomName);
   }
+});
+
+//room entered
+socket.on("enter",function(){
+  for(var i=0; i<texts.length;i++ ){
+    if(texts[i].id==roomName)
+    texts[i].style="display:flex";               //display previous messages of the roomname entered
+  }
+  start.style="display:flex";
+  joining.style="display:flex";
+  divvidcall.style = "display:none";
+  chatBox.style="display:flex";
+});
+
+//starting meet
+start.addEventListener("click",function(){
+  start.style="display:none";
+  joining.style="display:none";
+  socket.emit("start");
+});
+
+//joining meet
+joining.addEventListener("click",function(){
+  start.style="display:none"; 
+  joining.style="display:none";
+  socket.emit("joining");
 });
 
 mute.addEventListener("click", function () {
@@ -106,11 +136,15 @@ socket.on("leave", function () {
  
 });
 
-//room created
+//room is full
+socket.on("full", function () {
+  alert("Room is Full, Can't Join");
+});
+
+// meeting started
 socket.on("created", function () {
   creator = true;
-
-  navigator.mediaDevices
+   navigator.mediaDevices
     .getUserMedia({
       audio: {echoCancellation: true,
         noiseSuppression: true },
@@ -118,9 +152,7 @@ socket.on("created", function () {
     })
     .then(function (stream) {
       userStream = stream;
-      divvidcall.style = "display:none";
       divbtns.style="display:flex";
-      chatBox.style="display:flex";
       userVideo.srcObject = stream;
       userVideo.onloadedmetadata = function (e) {
         userVideo.play();
@@ -131,8 +163,7 @@ socket.on("created", function () {
     });
 });
 
-// room joined
-
+//meeting joined
 socket.on("joined", function () {
   creator = false;
 
@@ -158,14 +189,9 @@ socket.on("joined", function () {
     });
 });
 
-// room is full
 
-socket.on("full", function () {
-  alert("Room is Full, Can't Join");
-});
 
-// ready to communicate
-
+//ready to communicate
 socket.on("ready", function () {
   if (creator) {
     rtcPeerConnection = new RTCPeerConnection(iceServers);
@@ -186,15 +212,13 @@ socket.on("ready", function () {
   }
 });
 
-// receiving an ice candidate from the peer
-
+//receiving an ice candidate from the peer
 socket.on("candidate", function (candidate) {
   let icecandidate = new RTCIceCandidate(candidate);
   rtcPeerConnection.addIceCandidate(icecandidate);
 });
 
-// receiving an offer from the person who created the room
-
+//receiving an offer from the person who created the room
 socket.on("offer", function (offer) {
   if (!creator) {
     rtcPeerConnection = new RTCPeerConnection(iceServers);
@@ -215,8 +239,7 @@ socket.on("offer", function (offer) {
   }
 });
 
-// receiving an answer from the person who joined the room
-
+//receiving an answer from the person who joined the room
 socket.on("answer", function (answer) {
   rtcPeerConnection.setRemoteDescription(answer);
 });
@@ -229,7 +252,6 @@ function OnIceCandidateFunction(event) {
     socket.emit("candidate", event.candidate, roomName);
   }
 }
-
 function OnTrackFunction(event) {
   peerVideo.srcObject = event.streams[0];
   peerVideo.onloadedmetadata = function (e) {
@@ -237,7 +259,7 @@ function OnTrackFunction(event) {
   };
 }
 
-// Chat in meet
+//chat in meet
 button.addEventListener("click", function () {
   socket.emit("Chat", {
     message: message.value,
@@ -246,9 +268,9 @@ button.addEventListener("click", function () {
   });
 });
 
-socket.on("Message", function (data) {
+//display message in chat
+socket.on("Message",  function (data) {
   if(data.message!=''){
-
   output.innerHTML +=
   "<p><strong>"+ data.user + ": </strong>" +data.message + "</p>";
   message.value='';}

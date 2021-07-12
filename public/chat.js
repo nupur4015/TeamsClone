@@ -6,15 +6,13 @@ var button = document.getElementById("send");
 var output = document.getElementById("output");
 var ppl=document.getElementById("ppl");
 var image=document.getElementById("i");
-
-
 var people=[];
+
+
 button.addEventListener("click", function () {
   socket.emit("sendingMessage", {
     message: message.value,
-    user: username
-    
-    
+    user: username  
   });
 });
 
@@ -27,7 +25,4 @@ socket.on("broadcastMessage", function (data) {
   output.innerHTML +=
   "<p><strong>"+ data.user + ": </strong>" +data.message + "</p>";
   message.value='';}
-  
-  
-
 });
